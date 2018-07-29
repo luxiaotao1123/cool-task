@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cool.task.mapper.TaskMapper">
+    <resultMap id="TaskResult" type="com.cool.task.common.pojo.Task">
+        <result column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="cron" property="cron" jdbcType="VARCHAR" javaType="String"/>
+        <result column="params" property="params" jdbcType="VARCHAR" javaType="String"/>
+        <result column="notify_content" property="notifyContent" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_time" property="createTime" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result column="deleted" property="deleted" jdbcType="BIT" javaType="Boolean"/>
+    </resultMap>
+
+    <sql id="task_params">
+        id, name, cron, params, notify_content, create_time, update_time, deleted
+    </sql>
+
+    <select id="selectAll" resultMap="TaskResult">
+        SELECT
+        <include refid="task_params"/>
+        FROM t_task
+        WHERE deleted=FALSE
+    </select>
+
+    <select id="selectTask" parameterType="java.lang.String" resultMap="TaskResult">
+        SELECT
+        <include refid="task_params"/>
+        FROM t_task
+        WHERE name = #{name}
+        AND deleted=FALSE
+    </select>
+
+    <insert id="insertTask" useGeneratedKeys="true" keyProperty="id" parameterType="com.cool.task.common.pojo.Task">
+        INSERT INTO
+         t_task (`name`,`cron`,`params`,`notify_content`,`create_time`,`update_time`,`deleted`)
+        SELECT #{name},#{cron},#{params},#{notifyContent},#{createTime},#{updateTime},#{deleted}
+        FROM dual
+        WHERE NOT EXISTS
+        (SELECT name from t_task where name =#{name})
+    </insert>
+
+    <update id="updateTask" parameterType="com.cool.task.common.pojo.Task">
+        UPDATE t_task
+        <trim prefix="set" prefixOverrides=",">
+            update_time=now()
+            <if test="cron !=null and cron != '' ">
+                , cron=#{cron}
+            </if>
+            <if test="params !=null and params != '' ">
+                , params=#{params}
+            </if>
+            <if test="notifyContent !=null and notifyContent != '' ">
+                , notify_content=#{notifyContent}
+            </if>
+            <if test="deleted !=null">
+                , deleted = #{deleted}
+            </if>
+        </trim>
+        WHERE name = #{name}
+    </update>
+
+    <update id="deleteTask" parameterType="com.cool.task.common.pojo.Task">
+        UPDATE t_task
+        <trim prefix="set" prefixOverrides=",">
+            update_time=now()
+            <if test="deleted !=null">
+                , deleted = #{deleted}
+            </if>
+        </trim>
+        WHERE name = #{name}
+    </update>
+
+
+</mapper>

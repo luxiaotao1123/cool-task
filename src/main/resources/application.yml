@@ -1,0 +1,22 @@
+server:
+  port: 6060
+
+mybatis:
+  mapperLocations: classpath*:Mapper/*Mapper.xml
+  configuration:
+      mapUnderscoreToCamelCase: true
+      cache-enabled: true
+
+spring:
+  datasource:
+      url: jdbc:mysql://106.15.205.155:3306/cool_boot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&verifyServerCertificate=false
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: xltys1995
+
+tcp:
+  port: 4040
+
+logging:
+  config: classpath:logback-spring.xml
+
