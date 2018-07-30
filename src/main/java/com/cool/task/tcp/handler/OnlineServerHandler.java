@@ -47,7 +47,7 @@ public class OnlineServerHandler extends SimpleChannelInboundHandler<String> {
 
 
     /**
-     * init connect
+     * init connect,
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -95,7 +95,7 @@ public class OnlineServerHandler extends SimpleChannelInboundHandler<String> {
                 String method = req.getMethod();
                 Task task = req.getTask();
                 if (method == null || "".equals(method) || task == null){
-                    log.warn("tcp client send msg was error");
+                    log.warn("the tcp client id = {} send msg was error", clientId);
                     return;
                 }
 
@@ -122,7 +122,6 @@ public class OnlineServerHandler extends SimpleChannelInboundHandler<String> {
 
                     taskSubject.offer(task, taskMethodEnum);
                 }
-
 
                 break;
             default:

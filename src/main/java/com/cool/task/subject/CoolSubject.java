@@ -10,11 +10,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public abstract class CoolSubject {
 
+    public static LinkedBlockingQueue<Task> findTaskQueue;
     public static LinkedBlockingQueue<Task> addTaskQueue;
     public static LinkedBlockingQueue<Task> modifyTaskQueue;
     public static LinkedBlockingQueue<Task> removeTaskQueue;
 
     static {
+        findTaskQueue = new LinkedBlockingQueue<>();
         addTaskQueue = new LinkedBlockingQueue<>();
         modifyTaskQueue = new LinkedBlockingQueue<>();
         removeTaskQueue = new LinkedBlockingQueue<>();

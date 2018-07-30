@@ -17,6 +17,6 @@ spring:
 tcp:
   port: 4040
 
-logging:
-  config: classpath:logback-spring.xml
+#logging:
+#  config: classpath:logback-spring.xml
 

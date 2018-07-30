@@ -36,6 +36,7 @@ public class TaskSubject extends CoolSubject {
 
                 case FIND:
                     finTaskMeEnum = TaskMethodEnum.FIND;
+                    findTaskQueue.put(task);
                     break;
                 case ADD:
                     finTaskMeEnum = TaskMethodEnum.ADD;
@@ -54,7 +55,6 @@ public class TaskSubject extends CoolSubject {
             }
 
             taskObserver.run(finTaskMeEnum);
-
 
         }catch (Exception e){
             log.error(e.getMessage());

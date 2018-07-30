@@ -1,4 +1,4 @@
-package com.cool.task.tcp;
+package com.cool.task.common.utils;
 
 
 import com.alibaba.fastjson.JSON;
@@ -14,12 +14,16 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * client   /   it will be used to test
  * @author Vincent
  */
+@Deprecated
 public class NettyClient {
 
     public static void main(String[] args) {
@@ -51,12 +55,12 @@ public class NettyClient {
             TCPMsgRequest msgRequest = new TCPMsgRequest();
             msgRequest.setType(2);
             Task task = new Task();
-            task.setName("1199503311123121");
+            task.setName("11995033111231211");
             task.setCron(CronUtils.cron(20, TimeUnit.SECONDS));
             task.setParams("=====================123123======================");
             msgRequest.setMethod("post");
             msgRequest.setTask(task);
-            msgRequest.setId("1199503311123121");
+            msgRequest.setId("11995033111231211");
             String msgStr = JSON.toJSONString(msgRequest);
 
             new Thread(() -> {
@@ -102,7 +106,6 @@ public class NettyClient {
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//            ctx.channel().writeAndFlush("i am client !");
 
             System.out.println("channelActive");
         }
@@ -118,8 +121,7 @@ public class NettyClient {
             cause.printStackTrace();
         }
 
-
-
-
     }
+
+
 }

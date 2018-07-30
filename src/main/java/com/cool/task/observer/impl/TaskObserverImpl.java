@@ -1,10 +1,12 @@
 package com.cool.task.observer.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.cool.task.common.enums.TaskMethodEnum;
 import com.cool.task.component.TaskBus;
 import com.cool.task.dao.TaskDao;
 import com.cool.task.observer.TaskObserver;
 import com.cool.task.subject.CoolSubject;
+import com.cool.task.tcp.handler.OnlineServerHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class TaskObserverImpl implements TaskObserver {
 
         switch (taskMethodEnum){
             case FIND:
-
+                find();
                 break;
             case ADD:
                 add();
@@ -56,6 +58,14 @@ public class TaskObserverImpl implements TaskObserver {
 
         }
 
+    }
+
+    private void find(){
+        Optional.ofNullable(CoolSubject.findTaskQueue.poll()).
+                ifPresent(task -> {
+                    taskDao.selectTask(task);
+                    OnlineServerHandler.sendMsgToClient(task.getName(), JSON.toJSONString(task));
+                });
     }
 
     private void add(){
